@@ -16,6 +16,7 @@ import logicaDelNegocio.entidades.Curso;
  */
 public class ServicioCurso extends Servicio {
 
+    //Cadenas para invocar los SP y Cursores
     private static final String INSERTAR_CURSO = "{call INSERTCURSO(?,?,?,?,?,?)}";
     private static final String MODIFICAR_CURSO = "{call UPDATECURSO(?,?,?,?,?,?)}";
     private static final String BUSCAR_CURSO = "{?=call FINDCURSO(?)}";
@@ -75,7 +76,7 @@ public class ServicioCurso extends Servicio {
             throw new NoDataException("La base de datos no se encuentra disponible");
         }
         PreparedStatement pstmt = null;
-        try {  
+        try { 
             //////////SE CARCA ES STATEMENT
             pstmt = conexion.prepareStatement(MODIFICAR_CURSO);
             pstmt.setString(1, curso.getCodigo());
