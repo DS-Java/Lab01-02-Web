@@ -75,7 +75,7 @@ public class ServicioCurso extends Servicio {
             throw new NoDataException("La base de datos no se encuentra disponible");
         }
         PreparedStatement pstmt = null;
-        try { 
+        try {  
             //////////SE CARCA ES STATEMENT
             pstmt = conexion.prepareStatement(MODIFICAR_CURSO);
             pstmt.setString(1, curso.getCodigo());
