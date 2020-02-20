@@ -77,12 +77,6 @@ public class ServicioCurso extends Servicio {
         PreparedStatement pstmt = null;
         try { 
             pstmt = conexion.prepareStatement(MODIFICAR_CURSO);
-            /*pstmt.setString(1, curso.getCodigo_curso());
-            pstmt.setString(2, elAlumno.getCodigo_carrera());
-            pstmt.setString(3, elAlumno.getNo_ciclo());
-            pstmt.setString(4, elAlumno.getNombre());
-            pstmt.setString(5, elAlumno.getCreditos());
-            pstmt.setString(6, elAlumno.getHoras_semanales());*/
             pstmt.setString(1, curso.getCodigo());
             pstmt.setString(2, curso.getCodCarrera());
             pstmt.setString(3, curso.getNombre());
