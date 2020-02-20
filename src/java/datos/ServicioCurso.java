@@ -76,6 +76,7 @@ public class ServicioCurso extends Servicio {
         }
         PreparedStatement pstmt = null;
         try { 
+            //////////SE CARCA ES STATEMENT
             pstmt = conexion.prepareStatement(MODIFICAR_CURSO);
             pstmt.setString(1, curso.getCodigo());
             pstmt.setString(2, curso.getCodCarrera());
