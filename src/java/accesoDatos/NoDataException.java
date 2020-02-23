@@ -1,4 +1,4 @@
-package datos;
+package accesoDatos;
 
 public class NoDataException extends java.lang.Exception {
     

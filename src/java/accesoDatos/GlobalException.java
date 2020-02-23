@@ -1,4 +1,4 @@
-package datos;
+package accesoDatos;
 
 public class GlobalException extends java.lang.Exception {
     
