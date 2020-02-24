@@ -3,24 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador.curso;
+package modelos.curso;
 
+import accesoDatos.ServicioCurso;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logicaDelNegocio.entidades.Curso;
-import accesoDatos.ServicioCurso;
 
 /**
  *
  * @author DGSP1
  */
-@WebServlet(name = "Controlador.curso", urlPatterns = {"/Controlador/curso/create"})
-public class CursoController extends HttpServlet {
+@WebServlet(name = "modelos.curso.find", urlPatterns = {"/modelos/curso/find"})
+public class CursoFindModel extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,34 +34,30 @@ public class CursoController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getServletPath().equals("/Controlador/curso/create")) {
-            this.createC(request, response);
+        if (request.getServletPath().equals("/modelos/curso/find")) {
+            this.find(request, response);
         }
     }
 
-    protected void createC(HttpServletRequest request,
+    protected void find(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
         ServicioCurso miSC = new ServicioCurso();
         Curso model = new Curso();
-        updateModel(model, request);
+        updateModelCod(model, request);
+        ArrayList modelConsultar = null;
         try {
-            //Model.agregarMascota(model);
-            miSC.insertar_curso(model);
+            //modelConsultar = miSC.buscar_curso(model.getCodigo());
+            modelConsultar = miSC.buscar_curso_nombre(model.getCodigo());
         } catch (Exception ex) {
         }
-        //Aca pasaria a llamar a actualizar con el observer la lista de la tabla al servlet de modelos
-        request.getRequestDispatcher("/modelos/curso/list").forward(request, response);        
+        request.setAttribute("model", modelConsultar);
+        request.getRequestDispatcher("/presentacion/mantenimientoCurso/View.jsp").
+                forward(request, response);
     }
 
-    void updateModel(Curso model, HttpServletRequest request) {
-        model.setCodigo(request.getParameter("codigoCurso"));
-        model.setCodCarrera(request.getParameter("IdCarrera"));
-        model.setNombre(request.getParameter("nombre"));
-        model.setCreditos(request.getParameter("creditos"));
-        model.setAnio(request.getParameter("anio"));
-        model.setCiclo(request.getParameter("ciclo"));
-        model.setHora_semanales(request.getParameter("hSemanales"));
+    void updateModelCod(Curso model, HttpServletRequest request) {
+        model.setCodigo(request.getParameter("parametroDeBusqueda"));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

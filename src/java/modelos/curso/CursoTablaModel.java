@@ -3,24 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador.curso;
+package modelos.curso;
 
+import accesoDatos.GlobalException;
+import accesoDatos.NoDataException;
+import accesoDatos.ServicioCurso;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import logicaDelNegocio.entidades.Curso;
-import accesoDatos.ServicioCurso;
 
 /**
  *
  * @author DGSP1
  */
-@WebServlet(name = "Controlador.curso", urlPatterns = {"/Controlador/curso/create"})
-public class CursoController extends HttpServlet {
+@WebServlet(name = "modelos.curso.list", urlPatterns = {"/modelos/curso/list"})
+public class CursoTablaModel extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,35 +35,18 @@ public class CursoController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        if (request.getServletPath().equals("/Controlador/curso/create")) {
-            this.createC(request, response);
+            throws ServletException, IOException, GlobalException, NoDataException {
+        if (request.getServletPath().equals("/modelos/curso/list")) {
+            this.list(request, response);
         }
     }
-
-    protected void createC(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
+    
+    protected void list(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, GlobalException, NoDataException {
         ServicioCurso miSC = new ServicioCurso();
-        Curso model = new Curso();
-        updateModel(model, request);
-        try {
-            //Model.agregarMascota(model);
-            miSC.insertar_curso(model);
-        } catch (Exception ex) {
-        }
-        //Aca pasaria a llamar a actualizar con el observer la lista de la tabla al servlet de modelos
-        request.getRequestDispatcher("/modelos/curso/list").forward(request, response);        
-    }
-
-    void updateModel(Curso model, HttpServletRequest request) {
-        model.setCodigo(request.getParameter("codigoCurso"));
-        model.setCodCarrera(request.getParameter("IdCarrera"));
-        model.setNombre(request.getParameter("nombre"));
-        model.setCreditos(request.getParameter("creditos"));
-        model.setAnio(request.getParameter("anio"));
-        model.setCiclo(request.getParameter("ciclo"));
-        model.setHora_semanales(request.getParameter("hSemanales"));
+        System.out.println("ENTRO EN EL MODELO LISTAR TABLA");
+        request.setAttribute("model", miSC.listar_curso());
+        request.getRequestDispatcher("/presentacion/mantenimientoCurso/View.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -75,7 +61,13 @@ public class CursoController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (GlobalException ex) {
+            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoDataException ex) {
+            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -89,7 +81,13 @@ public class CursoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (GlobalException ex) {
+            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoDataException ex) {
+            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

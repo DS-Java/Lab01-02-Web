@@ -4,6 +4,7 @@
     Author     : DGSP1
 --%>
 
+<%@page import="logicaDelNegocio.entidades.Curso"%>
 <%@page import="logicaDelNegocio.entidades.Carrera"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,7 +27,22 @@
     <body>
         <% List<Carrera> model = (List<Carrera>) request.getAttribute("model");%>
         <h1>Mantenimiento de Cursos</h1>
-        <div class="card" style="width: 75%;">  
+        <div style="margin-left: 10px">
+            <form method="POST" name="form" action="modelos/curso/find">
+                <table>
+                    <tr>
+                        <td>
+                            <input id="parametroDeBusqueda" type="text" name="parametroDeBusqueda" size=15 maxlength=40 value="">
+                        </td>
+                        <td>
+                            <input type="submit" name="consultar" value="Consultar Curso"> 
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        
+        <div class="card" style="width: 75%; margin-left: 10px">  
             <h3>Registro de Curso</h3>
 
             <form method="POST" name="formulario" action="Controlador/curso/create">
@@ -87,6 +103,26 @@
                     </tr>
                 </table>
             </form>
+        </div>
+        <div>
+            <h4 style="margin-left: 20px">Lista de Cursos</h4>
+            <% List<Curso> model2 = (List<Curso>) request.getAttribute("model");%>
+            <table style="margin-left: 20px;">
+                <thead><tr><th style="width: 150px">Codigo &nbsp;</th><th style="width: 150px">Cod Carrera &nbsp;</th><th style="width: 150px">Nombre &nbsp;</th><th>Creditos &nbsp;</th><th style="width: 50px">Año &nbsp;</th><th style="width: 70px">Ciclo</th><th style="width: 170px">Horas Semanales &nbsp;</th></tr></thead>
+                <tbody> 
+                    <% for (Curso c : model2) {%>
+                    <tr>
+                        <td><%=c.getCodigo() %></td>
+                        <td><%=c.getCodCarrera() %></td>
+                        <td><%=c.getNombre() %></td>
+                        <td><%=c.getCreditos() %></td>
+                        <td><%=c.getAnio() %></td>
+                        <td><%=c.getCiclo() %></td>
+                        <td><%=c.getHora_semanales() %></td>
+                    </tr>
+                    <% }%> 
+                </tbody>
+            </table>
         </div>
     </body>
 </html>
