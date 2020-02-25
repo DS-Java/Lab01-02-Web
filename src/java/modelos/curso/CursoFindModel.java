@@ -44,16 +44,14 @@ public class CursoFindModel extends HttpServlet {
             throws ServletException, IOException {
         ServicioCurso miSC = new ServicioCurso();
         Curso model = new Curso();
-        updateModelCod(model, request);
-        ArrayList modelConsultar = null;
-        try {
-            //modelConsultar = miSC.buscar_curso(model.getCodigo());
-            modelConsultar = miSC.buscar_curso_nombre(model.getCodigo());
-        } catch (Exception ex) {
+        updateModelCod(model, request); 
+        ArrayList modelConsultar = new ArrayList();
+        try { 
+           modelConsultar = miSC.buscar_curso_nombre(model.getCodigo());
+        } catch (Exception ex) {   
         }
         request.setAttribute("model", modelConsultar);
-        request.getRequestDispatcher("/presentacion/mantenimientoCurso/View.jsp").
-                forward(request, response);
+        request.getRequestDispatcher("/modelos/curso/preparaCreate").forward(request, response);
     }
 
     void updateModelCod(Curso model, HttpServletRequest request) {

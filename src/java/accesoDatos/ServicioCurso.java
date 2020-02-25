@@ -11,8 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.scene.shape.Arc;
+import logicaDelNegocio.entidades.Carrera;
 import logicaDelNegocio.entidades.Curso;
-import oracle.jdbc.OracleTypes;  
+import logicaDelNegocio.entidades.Profesor;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -21,18 +26,22 @@ import oracle.jdbc.OracleTypes;
 public class ServicioCurso extends Servicio {
 
     //Cadenas para invocar los SP y Cursores
-    private static final String INSERTAR_CURSO = "{call INSERTCURSO(?,?,?,?,?,?,?)}";
+    private static final String INSERTAR_CURSO = "{call INSERTCURSO(?,?,?,?,?,?,?,?)}";
     private static final String MODIFICAR_CURSO = "{call UPDATECURSO(?,?,?,?,?,?)}";
     private static final String BUSCAR_CURSO = "{?=call FINDCURSO(?)}";
     private static final String BUSCAR_CURSO_NOMBRE = "{?=call FINDCURSOPORNOMBRE(?)}";
     private static final String LISTAR_CURSO = "{?=call LISTCURSO()}";
+    private static final String LISTAR_CARRERA = "{?=call LISTCARRERA()}";
+    private static final String LISTAR_PROFESOR = "{?=call LISTPROFESOR()}";
     private static final String ELIMINAR_CURSO = "{call DELETECURSO(?)}";
+
+    private static ArrayList<Curso> coleccionCursos = new ArrayList<>();
 
     public ServicioCurso() {
     }
 
     /*Insertar Curso*/
-    public void insertar_curso(Curso curso) throws GlobalException, NoDataException, SQLException {
+    public void insertar_curso(Curso curso, String cedula) throws GlobalException, NoDataException, SQLException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -51,6 +60,7 @@ public class ServicioCurso extends Servicio {
             pstmt.setString(5, curso.getAnio());
             pstmt.setString(6, curso.getCiclo());
             pstmt.setInt(7, Integer.parseInt(curso.getHora_semanales()));
+            pstmt.setString(8, cedula);
             boolean resultado = pstmt.execute();
             if (resultado == true) {
                 throw new NoDataException("No se realizo la insercion");
@@ -114,9 +124,10 @@ public class ServicioCurso extends Servicio {
 
     /*Buscar cursos por Codigo*/
     public ArrayList buscar_curso(String id) throws GlobalException, NoDataException {
-        ArrayList coleccion = new ArrayList();
+        coleccionCursos.clear();
+
         if (id.isEmpty()) {
-            coleccion = (ArrayList) listar_curso();
+            coleccionCursos = (ArrayList) listar_curso();
         } else {
             try {
                 conectar();
@@ -144,7 +155,7 @@ public class ServicioCurso extends Servicio {
                             rs.getString("ANIO"),
                             rs.getString("CICLO"),
                             rs.getString("HORA_SEMANALES"));
-                    coleccion.add(elCurso);
+                    coleccionCursos.add(elCurso);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -163,18 +174,20 @@ public class ServicioCurso extends Servicio {
                     throw new GlobalException("Estatutos invalidos o nulos");
                 }
             }
-            if (coleccion == null || coleccion.size() == 0) {
+            if (coleccionCursos == null || coleccionCursos.size() == 0) {
                 throw new NoDataException("No hay datos");
             }
         }
-        return coleccion;
+        return coleccionCursos;
     }
 
     /*Buscar cursos por Nombre*/
     public ArrayList buscar_curso_nombre(String nombre) throws GlobalException, NoDataException {
-        ArrayList coleccion = new ArrayList();
+        //coleccionCursos.clear();
+        coleccionCursos = new ArrayList<>();
+ 
         if (nombre.isEmpty()) {
-            coleccion = (ArrayList) listar_curso();
+            coleccionCursos = (ArrayList) listar_curso();
         } else {
             try {
                 conectar();
@@ -202,9 +215,9 @@ public class ServicioCurso extends Servicio {
                             rs.getString("ANIO"),
                             rs.getString("CICLO"),
                             rs.getString("HORA_SEMANALES"));
-                    coleccion.add(elCurso);
-                    System.out.println("Codigo: "+ elCurso.getCodigo());
-                    System.out.println("NOMBRE: "+ elCurso.getNombre());
+                    coleccionCursos.add(elCurso);
+                    System.out.println("Codigo: " + elCurso.getCodigo());
+                    System.out.println("NOMBRE: " + elCurso.getNombre());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -223,11 +236,12 @@ public class ServicioCurso extends Servicio {
                     throw new GlobalException("Estatutos invalidos o nulos");
                 }
             }
-            if (coleccion == null || coleccion.size() == 0) {
+            if (coleccionCursos == null || coleccionCursos.size() == 0) {
                 throw new NoDataException("No hay datos");
             }
         }
-        return coleccion;
+        System.out.println("Cantidad de cursos encontrador: "+coleccionCursos.size());
+        return coleccionCursos;
     }
 
     /*Listar Cursos*/
@@ -263,6 +277,111 @@ public class ServicioCurso extends Servicio {
                 coleccion.add(elCurso);
                 System.out.println("Cod: " + elCurso.getCodigo());
                 System.out.println("Nombre: " + elCurso.getNombre());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            throw new GlobalException("Sentencia no valida");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+                throw new GlobalException("Estatutos invalidos o nulos");
+            }
+        }
+        if (coleccion == null || coleccion.size() == 0) {
+            coleccion = new ArrayList();
+            throw new NoDataException("No hay datos");
+        }
+        return coleccion;
+    }
+
+    /*Listar Carreras*/
+    public Collection listar_carrera() throws GlobalException, NoDataException {//ArrayList<Curso>
+        try {
+            conectar();
+        } catch (ClassNotFoundException ex) {
+            throw new GlobalException("No se ha localizado el Driver");
+        } catch (SQLException e) {
+            throw new NoDataException("La base de datos no se encuentra disponible");
+        }
+
+        ResultSet rs = null;
+        ArrayList coleccion = new ArrayList();
+        Carrera laCarrera = null;
+        CallableStatement pstmt = null;
+        try {
+            pstmt = conexion.prepareCall(LISTAR_CARRERA);
+            pstmt.registerOutParameter(1, OracleTypes.CURSOR);
+            pstmt.execute();
+            rs = (ResultSet) pstmt.getObject(1);
+            while (rs.next()) {
+                laCarrera = new Carrera(
+                        rs.getString("CODCARRERA"),
+                        rs.getString("NOMBRE"),
+                        rs.getString("TITULO"));
+                coleccion.add(laCarrera);
+                System.out.println("Cod Carrera: " + laCarrera.getCodCarrera());
+                System.out.println("Nombre: " + laCarrera.getNombre());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            throw new GlobalException("Sentencia no valida");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+                throw new GlobalException("Estatutos invalidos o nulos");
+            }
+        }
+        if (coleccion == null || coleccion.size() == 0) {
+            throw new NoDataException("No hay datos");
+        }
+        return coleccion;
+    }
+
+    /*Listar Profesores*/
+    public Collection listar_profesor() throws GlobalException, NoDataException {//ArrayList<Curso>
+        try {
+            conectar();
+        } catch (ClassNotFoundException ex) {
+            throw new GlobalException("No se ha localizado el Driver");
+        } catch (SQLException e) {
+            throw new NoDataException("La base de datos no se encuentra disponible");
+        }
+
+        ResultSet rs = null;
+        ArrayList coleccion = new ArrayList();
+        Profesor elProfesor = null;
+        CallableStatement pstmt = null;
+        try {
+            pstmt = conexion.prepareCall(LISTAR_PROFESOR);
+            pstmt.registerOutParameter(1, OracleTypes.CURSOR);
+            pstmt.execute();
+            rs = (ResultSet) pstmt.getObject(1);
+            while (rs.next()) {
+                elProfesor = new Profesor(
+                        rs.getString("CEDULA"),
+                        rs.getString("NOMBRE"),
+                        rs.getString("TELEFONO"),
+                        rs.getString("EMAIL")
+                );
+                coleccion.add(elProfesor);
+                System.out.println("Ced Profe: " + elProfesor.getCedula());
+                System.out.println("Nombre: " + elProfesor.getNombre());
             }
         } catch (SQLException e) {
             e.printStackTrace();

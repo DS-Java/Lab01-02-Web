@@ -4,6 +4,7 @@
     Author     : DGSP1
 --%>
 
+<%@page import="logicaDelNegocio.entidades.Profesor"%>
 <%@page import="logicaDelNegocio.entidades.Curso"%>
 <%@page import="logicaDelNegocio.entidades.Carrera"%>
 <%@page import="java.util.List"%>
@@ -25,12 +26,11 @@
         <script src="js/ajax.js"></script>
     </head>
     <body>
-        <% List<Carrera> model = (List<Carrera>) request.getAttribute("model");%>
         <h1>Mantenimiento de Cursos</h1>
         <div style="margin-left: 10px">
             <form method="POST" name="form" action="modelos/curso/find">
                 <table>
-                    <tr>
+                    <tr> 
                         <td>
                             <input id="parametroDeBusqueda" type="text" name="parametroDeBusqueda" size=15 maxlength=40 value="">
                         </td>
@@ -41,10 +41,11 @@
                 </table>
             </form>
         </div>
-        
-        <div class="card" style="width: 75%; margin-left: 10px">  
-            <h3>Registro de Curso</h3>
 
+        <div class="card" style="width: 75%; margin-left: 10px">  
+            <h3>Registro de Curso</h3>  
+            <% List<Carrera> model = (List<Carrera>) request.getAttribute("modelCarrera");%>
+            <% List<Profesor> modelP = (List<Profesor>) request.getAttribute("modelProfesor");%>
             <form method="POST" name="formulario" action="Controlador/curso/create">
                 <table border=0 cellpadding=3 cellspacing=4 >
                     <tr>
@@ -59,14 +60,14 @@
                     </tr>
                     <tr>
                         <td>Carrera a la que pertenece</td>
-                        <!--td>
+                        <td>
                             <select name="IdCarrera" id="IdCarrera">    
-                                <!% for (Carrera c : model) {%>
-                                  <option name="idP" value="<!%=c.getCodCarrera() %>"><!%=c.getNombre()%></option>  
-                                <!%}%>
+                                <% for (Carrera c : model) {%>
+                                <option name="idC" value="<%=c.getCodCarrera()%>"><%= c.getNombre()%></option>  
+                                <%}%>
                             </select> 
-                        </td-->
-                        <td><input id="IdCarrera" type="text" name="IdCarrera" size=15 maxlength=40 value=""></td>
+                        </td>
+                        <!--td><input id="IdCarrera" type="text" name="IdCarrera" size=15 maxlength=40 value=""></td-->
                         <td></td>
                     </tr>		
                     <tr>
@@ -97,6 +98,18 @@
                         <td></td>
                     </tr>
                     <tr>
+                        <td>Profesor: </td>
+                        <td>
+                            <select name="cedProfesor" id="cedProfesor">    
+                                <% for (Profesor p : modelP) {%>
+                                <option name="idP" value="<%= p.getCedula()%>"><%= p.getNombre()%></option>  
+                                <%}%>
+                            </select>
+                        </td>
+                        <!--td><input id="cedProfesor" type="text" name="cedProfesor" size=15 maxlength=40 value=""></td-->
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td height="55" colspan="3" align="center">
                             <input type="submit" name="Submit" value="Agregar"> 
                         </td>
@@ -112,13 +125,13 @@
                 <tbody> 
                     <% for (Curso c : model2) {%>
                     <tr>
-                        <td><%=c.getCodigo() %></td>
-                        <td><%=c.getCodCarrera() %></td>
-                        <td><%=c.getNombre() %></td>
-                        <td><%=c.getCreditos() %></td>
-                        <td><%=c.getAnio() %></td>
-                        <td><%=c.getCiclo() %></td>
-                        <td><%=c.getHora_semanales() %></td>
+                        <td><%=c.getCodigo()%></td>
+                        <td><%=c.getCodCarrera()%></td>
+                        <td><%=c.getNombre()%></td>
+                        <td><%=c.getCreditos()%></td>
+                        <td><%=c.getAnio()%></td>
+                        <td><%=c.getCiclo()%></td>
+                        <td><%=c.getHora_semanales()%></td>
                     </tr>
                     <% }%> 
                 </tbody>

@@ -10,7 +10,6 @@ import accesoDatos.NoDataException;
 import accesoDatos.ServicioCurso;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,14 +17,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import logicaDelNegocio.entidades.Curso;
 
 /**
  *
  * @author DGSP1
  */
-@WebServlet(name = "modelos.curso.list", urlPatterns = {"/modelos/curso/list"})
-public class CursoTablaModel extends HttpServlet {
+@WebServlet(name = "modelos.curso.comboProfesor", urlPatterns = {"/modelos/curso/comboProfesor"})
+public class CursoComboProfesor extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,16 +36,16 @@ public class CursoTablaModel extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, GlobalException, NoDataException {
-        if (request.getServletPath().equals("/modelos/curso/list")) {
-            this.list(request, response);
+        if (request.getServletPath().equals("/modelos/curso/comboProfesor")) {
+            this.preparaComboProfesor(request, response);
         }
     }
-    
-    protected void list(HttpServletRequest request, HttpServletResponse response)
+
+    protected void preparaComboProfesor(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, GlobalException, NoDataException {
         ServicioCurso miSC = new ServicioCurso();
-        request.setAttribute("model", miSC.listar_curso());
-        request.getRequestDispatcher("/modelos/curso/preparaCreate").forward(request, response);
+        request.setAttribute("modelProfesor", miSC.listar_profesor());
+        request.getRequestDispatcher("/presentacion/mantenimientoCurso/View.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -65,9 +63,9 @@ public class CursoTablaModel extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (GlobalException ex) {
-            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CursoComboProfesor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoDataException ex) {
-            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CursoComboProfesor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -85,9 +83,9 @@ public class CursoTablaModel extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (GlobalException ex) {
-            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CursoComboProfesor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoDataException ex) {
-            Logger.getLogger(CursoTablaModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CursoComboProfesor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

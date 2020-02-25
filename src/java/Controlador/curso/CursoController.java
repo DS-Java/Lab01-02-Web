@@ -34,7 +34,7 @@ public class CursoController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getServletPath().equals("/Controlador/curso/create")) {
-            this.createC(request, response);
+            this.createC(request, response); 
         }
     }
 
@@ -44,13 +44,12 @@ public class CursoController extends HttpServlet {
         ServicioCurso miSC = new ServicioCurso();
         Curso model = new Curso();
         updateModel(model, request);
+        String cedula = updateCedula(request);
         try {
-            //Model.agregarMascota(model);
-            miSC.insertar_curso(model);
-        } catch (Exception ex) {
+            miSC.insertar_curso(model,cedula);
+        } catch (Exception ex) { 
         }
-        //Aca pasaria a llamar a actualizar con el observer la lista de la tabla al servlet de modelos
-        request.getRequestDispatcher("/modelos/curso/list").forward(request, response);        
+        request.getRequestDispatcher("/modelos/curso/list").forward(request, response);
     }
 
     void updateModel(Curso model, HttpServletRequest request) {
@@ -63,6 +62,11 @@ public class CursoController extends HttpServlet {
         model.setHora_semanales(request.getParameter("hSemanales"));
     }
 
+    String updateCedula(HttpServletRequest request) {
+        String ced = request.getParameter("cedProfesor");
+        return ced;
+    }
+   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
