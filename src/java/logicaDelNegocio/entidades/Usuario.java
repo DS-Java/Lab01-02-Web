@@ -13,15 +13,18 @@ public class Usuario {
     
     private String usuario;
     private String clave;
-
-    public Usuario(String usuario, String clave) {
+    private String rol;
+ 
+    public Usuario(String usuario, String clave, String rol) {
         this.usuario = usuario;
         this.clave = clave;
+        this.rol = rol;
     }
 
     public Usuario() {
         usuario = new String();
         clave = new String();
+        rol = new String();
     }
 
     public String getUsuario() {
@@ -40,8 +43,16 @@ public class Usuario {
         this.clave = clave;
     }
 
+    public String getRol() {
+        return rol; 
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{" + "usuario=" + usuario + ", clave=" + clave + '}';
+        return "Usuario{" + "usuario=" + usuario + ", clave=" + clave + ", rol=" + rol + '}';
     }
 }
