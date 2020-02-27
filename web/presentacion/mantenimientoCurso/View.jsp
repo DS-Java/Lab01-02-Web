@@ -40,7 +40,7 @@
                     </tr>
                 </table>
             </form>
-        </div>
+        </div> 
 
         <div class="card" style="width: 75%; margin-left: 10px">  
             <h3>Registro de Curso</h3>  
@@ -121,7 +121,20 @@
             <h4 style="margin-left: 20px">Lista de Cursos</h4>
             <% List<Curso> model2 = (List<Curso>) request.getAttribute("model");%>
             <table style="margin-left: 20px;">
-                <thead><tr><th style="width: 150px">Codigo &nbsp;</th><th style="width: 150px">Cod Carrera &nbsp;</th><th style="width: 150px">Nombre &nbsp;</th><th>Creditos &nbsp;</th><th style="width: 50px">Año &nbsp;</th><th style="width: 70px">Ciclo</th><th style="width: 170px">Horas Semanales &nbsp;</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th style="width: 150px">Codigo &nbsp;</th>
+                        <th style="width: 150px">Cod Carrera &nbsp;</th>
+                        <th style="width: 150px">Nombre &nbsp;</th>
+                        <th>Creditos &nbsp;</th>
+                        <th style="width: 50px">Año &nbsp;</th>
+                        <th style="width: 70px">Ciclo</th>
+                        <th style="width: 170px">Horas Semanales &nbsp;</th>
+                        <th style="width: 170px">Profesor &nbsp;</th>
+                        <th style="width: 90px">Cedula &nbsp;</th>
+                        <th style="width: 90px">Eliminar &nbsp;</th>
+                    </tr>
+                </thead>
                 <tbody> 
                     <% for (Curso c : model2) {%>
                     <tr>
@@ -132,6 +145,9 @@
                         <td><%=c.getAnio()%></td>
                         <td><%=c.getCiclo()%></td>
                         <td><%=c.getHora_semanales()%></td>
+                        <td><%=c.getProfesor().getNombre()%></td>
+                        <td><%=c.getProfesor().getCedula() %></td>
+                        <td><a href="Controlador/curso/delete?codigoCursoDelete=<%=c.getCodigo()%>">Eliminar</a></td>
                     </tr>
                     <% }%> 
                 </tbody>
