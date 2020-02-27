@@ -46,9 +46,9 @@ public class CursoFindModel extends HttpServlet {
         Curso model = new Curso();
         updateModelCod(model, request); 
         ArrayList modelConsultar = new ArrayList();
-        try { 
+        try {
            modelConsultar = miSC.buscar_curso_nombre(model.getCodigo());
-        } catch (Exception ex) {   
+        } catch (Exception ex) {     
         }
         request.setAttribute("model", modelConsultar);
         request.getRequestDispatcher("/modelos/curso/preparaCreate").forward(request, response);

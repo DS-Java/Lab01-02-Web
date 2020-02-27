@@ -9,7 +9,7 @@ and open the template in the editor.
         <title>Inicio</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       
+        <base href="http://localhost:8080/Lab01-02/" >
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-grid.css">
         <link rel="stylesheet" href="css/themify-icons.css">
@@ -18,12 +18,33 @@ and open the template in the editor.
         <script src="js/bootstrap.min.js"></script>
         <script src="js/ajax.js"></script>  
         <script src="js/ajax.js"></script>
-        
-        <base href="http://localhost:8080/Lab01-02/" >
     </head> 
     <body>
-        <div>Bienvenido al sistema de Gestion Academica UNA Nacional&nbsp;
-        <h2> Le invitamos <a href="presentacion/login/View.jsp">Ingresar</a> en nuestro sitio</h2>
+        <div>Bienvenido al sistema de Gestión Academica UNA Nacional&nbsp;
+            <h2> Le invitamos a loguearse</h2>
+            <form method="POST" name="formulario" action="Controlador/curso/login">
+                <table>
+                    <tr>
+                        <td>Usuario</td>
+                        <td>
+                            <input id="usuario" type="text" name="usuario" size=15 maxlength=40 value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Clave</td>
+                        <td>
+                            <input id="clave" type="text" name="clave" size=15 maxlength=40 value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td> 
+                        <td height="55" colspan="3" align="center">
+                            <input type="submit" name="Submit" value="Ingresar"> 
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <a href="presentacion/inicio/View.jsp">Ingresar</a>
         </div>
     </body>
 </html>

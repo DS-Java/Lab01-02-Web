@@ -46,7 +46,10 @@ public class CursoTablaModel extends HttpServlet {
     protected void list(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, GlobalException, NoDataException {
         ServicioCurso miSC = new ServicioCurso();
-        request.setAttribute("model", miSC.listar_curso());
+        ArrayList<Curso>listaCursos = new ArrayList<>();
+        listaCursos = (ArrayList<Curso>) miSC.listar_curso();
+        //request.setAttribute("model", miSC.listar_curso());
+        request.setAttribute("model", listaCursos);
         request.getRequestDispatcher("/modelos/curso/preparaCreate").forward(request, response);
     }
 

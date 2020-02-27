@@ -18,7 +18,7 @@
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/ajax.js"></script>  
-        <script src="js/ajax.js"></script>
+        <script src="js/ajax.js"></script>  
     </head>
     <body>
         <div>Bienvenido al sistema de Gestion Academica UNA &nbsp;

@@ -17,8 +17,9 @@ public class Curso {
     private String anio;
     private String ciclo;
     private String hora_semanales;
+    private Profesor profesor;
 
-    public Curso(String codigo, String codCarrera, String nombre, String creditos, String anio, String ciclo, String hora_semanales) {
+    public Curso(String codigo, String codCarrera, String nombre, String creditos, String anio, String ciclo, String hora_semanales, Profesor profesor) {
         this.codigo = codigo;
         this.codCarrera = codCarrera;
         this.nombre = nombre;
@@ -26,7 +27,10 @@ public class Curso {
         this.anio = anio;
         this.ciclo = ciclo;
         this.hora_semanales = hora_semanales;
+        this.profesor = profesor;
     }
+
+    
 
     public Curso() {
         codigo = new String();
@@ -36,6 +40,7 @@ public class Curso {
         anio = new String();
         ciclo = new String();
         hora_semanales = new String();
+        profesor = new Profesor();
     }
 
     public String getCodigo() {
@@ -94,13 +99,16 @@ public class Curso {
         this.hora_semanales = hora_semanales;
     }
 
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
     @Override
     public String toString() {
-        return "Curso{" + "codigo=" + codigo + ", codCarrera=" + codCarrera + ", nombre=" + nombre + ", creditos=" + creditos + ", anio=" + anio + ", ciclo=" + ciclo + ", hora_semanales=" + hora_semanales + '}';
-    }
- 
-    
-    
-    
-    
+        return "Curso{" + "codigo=" + codigo + ", codCarrera=" + codCarrera + ", nombre=" + nombre + ", creditos=" + creditos + ", anio=" + anio + ", ciclo=" + ciclo + ", hora_semanales=" + hora_semanales + ", profesor=" + profesor + '}';
+    }    
 }

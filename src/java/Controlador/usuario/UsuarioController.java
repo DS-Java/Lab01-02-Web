@@ -63,7 +63,7 @@ public class UsuarioController extends HttpServlet {
                     if (logged != null) {
                         request.getSession(true).setAttribute("logged", logged);
                         request.getRequestDispatcher("/presentacion/inicio/View.jsp").forward(request, response);//CAMBIAR AQUI 
-                    }else{ 
+                    }else{  
                         request.getRequestDispatcher("/index.html").forward(request, response);
                     }
                 } catch (Exception ex) {

@@ -139,6 +139,7 @@ public class ServicioCurso extends Servicio {
             ResultSet rs = null;
 
             Curso elCurso = null;
+            Profesor elProfeAsignado = null;
             CallableStatement pstmt = null;
             try {
                 pstmt = conexion.prepareCall(BUSCAR_CURSO);
@@ -147,6 +148,11 @@ public class ServicioCurso extends Servicio {
                 pstmt.execute();
                 rs = (ResultSet) pstmt.getObject(1);//Se saca el objeto sacado
                 while (rs.next()) {
+                    elProfeAsignado = new Profesor(
+                            rs.getString("CEDULA"),
+                            rs.getString("NOMBREPROFESOR"),
+                            rs.getString("TELEFONO"),
+                            rs.getString("EMAIL"));
                     elCurso = new Curso(
                             rs.getString("CODIGO"),
                             rs.getString("CODCARRERA"),
@@ -154,7 +160,8 @@ public class ServicioCurso extends Servicio {
                             rs.getString("CREDITOS"),
                             rs.getString("ANIO"),
                             rs.getString("CICLO"),
-                            rs.getString("HORA_SEMANALES"));
+                            rs.getString("HORA_SEMANALES"),
+                            elProfeAsignado);
                     coleccionCursos.add(elCurso);
                 }
             } catch (SQLException e) {
@@ -185,7 +192,7 @@ public class ServicioCurso extends Servicio {
     public ArrayList buscar_curso_nombre(String nombre) throws GlobalException, NoDataException {
         //coleccionCursos.clear();
         coleccionCursos = new ArrayList<>();
- 
+
         if (nombre.isEmpty()) {
             coleccionCursos = (ArrayList) listar_curso();
         } else {
@@ -199,6 +206,7 @@ public class ServicioCurso extends Servicio {
             ResultSet rs = null;
 
             Curso elCurso = null;
+            Profesor elProfeAsignado = null;
             CallableStatement pstmt = null;
             try {
                 pstmt = conexion.prepareCall(BUSCAR_CURSO_NOMBRE);
@@ -207,6 +215,11 @@ public class ServicioCurso extends Servicio {
                 pstmt.execute();
                 rs = (ResultSet) pstmt.getObject(1);//Se saca el objeto sacado
                 while (rs.next()) {
+                    elProfeAsignado = new Profesor(
+                            rs.getString("CEDULA"),
+                            rs.getString("NOMBREPROFESOR"),
+                            rs.getString("TELEFONO"),
+                            rs.getString("EMAIL"));  
                     elCurso = new Curso(
                             rs.getString("CODIGO"),
                             rs.getString("CODCARRERA"),
@@ -214,7 +227,8 @@ public class ServicioCurso extends Servicio {
                             rs.getString("CREDITOS"),
                             rs.getString("ANIO"),
                             rs.getString("CICLO"),
-                            rs.getString("HORA_SEMANALES"));
+                            rs.getString("HORA_SEMANALES"),
+                            elProfeAsignado);
                     coleccionCursos.add(elCurso);
                     System.out.println("Codigo: " + elCurso.getCodigo());
                     System.out.println("NOMBRE: " + elCurso.getNombre());
@@ -240,13 +254,14 @@ public class ServicioCurso extends Servicio {
                 throw new NoDataException("No hay datos");
             }
         }
-        System.out.println("Cantidad de cursos encontrador: "+coleccionCursos.size());
+        System.out.println("Cantidad de cursos encontrador: " + coleccionCursos.size());
         return coleccionCursos;
     }
 
     /*Listar Cursos*/
     //public Collection listar_curso() throws GlobalException, NoDataException {
     public Collection listar_curso() throws GlobalException, NoDataException {//ArrayList<Curso>
+        coleccionCursos = new ArrayList<>();
         try {
             conectar();
         } catch (ClassNotFoundException ex) {
@@ -256,8 +271,9 @@ public class ServicioCurso extends Servicio {
         }
 
         ResultSet rs = null;
-        ArrayList coleccion = new ArrayList();
+        //ArrayList coleccion = new ArrayList();
         Curso elCurso = null;
+        Profesor elProfeAsignado = null;
         CallableStatement pstmt = null;
         try {
             pstmt = conexion.prepareCall(LISTAR_CURSO);
@@ -266,6 +282,11 @@ public class ServicioCurso extends Servicio {
             rs = (ResultSet) pstmt.getObject(1);
             System.out.println("Intento");
             while (rs.next()) {
+                elProfeAsignado = new Profesor(
+                        rs.getString("CEDULA"),
+                        rs.getString("NOMBREPROFESOR"),
+                        rs.getString("TELEFONO"),
+                        rs.getString("EMAIL"));
                 elCurso = new Curso(
                         rs.getString("CODIGO"),
                         rs.getString("CODCARRERA"),
@@ -273,8 +294,9 @@ public class ServicioCurso extends Servicio {
                         rs.getString("CREDITOS"),
                         rs.getString("ANIO"),
                         rs.getString("CICLO"),
-                        rs.getString("HORA_SEMANALES"));
-                coleccion.add(elCurso);
+                        rs.getString("HORA_SEMANALES"),
+                        elProfeAsignado);
+                coleccionCursos.add(elCurso);
                 System.out.println("Cod: " + elCurso.getCodigo());
                 System.out.println("Nombre: " + elCurso.getNombre());
             }
@@ -295,11 +317,12 @@ public class ServicioCurso extends Servicio {
                 throw new GlobalException("Estatutos invalidos o nulos");
             }
         }
-        if (coleccion == null || coleccion.size() == 0) {
-            coleccion = new ArrayList();
-            throw new NoDataException("No hay datos");
+        if (coleccionCursos == null || coleccionCursos.size() == 0) {
+            //coleccionCursos = new ArrayList();
+            //throw new NoDataException("No hay datos");
         }
-        return coleccion;
+        //return coleccion;
+        return coleccionCursos;
     }
 
     /*Listar Carreras*/
@@ -375,7 +398,7 @@ public class ServicioCurso extends Servicio {
             while (rs.next()) {
                 elProfesor = new Profesor(
                         rs.getString("CEDULA"),
-                        rs.getString("NOMBRE"),
+                        rs.getString("NOMBREPROFESOR"),
                         rs.getString("TELEFONO"),
                         rs.getString("EMAIL")
                 );

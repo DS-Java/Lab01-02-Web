@@ -19,7 +19,7 @@ import accesoDatos.ServicioCurso;
  *
  * @author DGSP1
  */
-@WebServlet(name = "Controlador.curso", urlPatterns = {"/Controlador/curso/create"})
+@WebServlet(name = "Controlador.curso.create", urlPatterns = {"/Controlador/curso/create"})
 public class CursoController extends HttpServlet {
 
     /**
